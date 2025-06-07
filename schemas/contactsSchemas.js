@@ -50,6 +50,7 @@ export const updateContactSchema = Joi.object({
     .messages({
       "string.pattern.base": "Phone must be a valid phone number",
       "string.minDigits": "Phone must contain at least 7 digits",
+      "string.pattern.base": "Phone must be a valid phone number",
     }),
 })
   .min(1)
