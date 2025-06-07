@@ -25,10 +25,21 @@ const updateContact = async (id, data) => {
   });
 };
 
+const updateStatusContact = async (id, data) => {
+  const contact = await getContactById(id);
+  if (!contact) {
+    return null;
+  }
+  return contact.update(data, {
+    returning: true,
+  });
+};
+
 export default {
   listContacts,
   getContactById,
   removeContact,
   addContact,
   updateContact,
+  updateStatusContact,
 };
