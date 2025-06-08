@@ -7,8 +7,10 @@ import {
   updateContactSchema,
   updateStatusContactSchema,
 } from "../schemas/contactsSchemas.js";
+import authenticate from "../helpers/authenticate.js";
 
 const contactsRouter = express.Router();
+contactsRouter.use(authenticate);
 
 contactsRouter.get("/", contactsController.getAllContacts);
 

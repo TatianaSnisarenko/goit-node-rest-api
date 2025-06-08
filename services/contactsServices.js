@@ -1,11 +1,24 @@
 import Contact from "../db/models/Contact.js";
 
-const listContacts = () => Contact.findAll();
+const listContacts = (userId) => {
+  return Contact.findAll({
+    where: {
+      owner: userId,
+    },
+  });
+};
 
-const getContactById = (contactId) => Contact.findByPk(contactId);
+const getContactById = (userId, contactId) => {
+  return Contact.findOne({
+    where: {
+      id: contactId,
+      owner: userId,
+    },
+  });
+};
 
-const removeContact = async (contactId) => {
-  const contact = await Contact.findByPk(contactId);
+const removeContact = async (userId, contactId) => {
+  const contact = await getContactById(userId, contactId);
   if (!contact) {
     return null;
   }
@@ -13,10 +26,17 @@ const removeContact = async (contactId) => {
   return contact;
 };
 
-const addContact = (data) => Contact.create(data);
+const addContact = (userId, data) => {
+  return Contact.create(
+    { ...data, owner: userId },
+    {
+      returning: true,
+    }
+  );
+};
 
-const updateContact = async (id, data) => {
-  const contact = await getContactById(id);
+const updateContact = async (userId, contactId, data) => {
+  const contact = await getContactById(userId, contactId);
   if (!contact) {
     return null;
   }
@@ -25,8 +45,8 @@ const updateContact = async (id, data) => {
   });
 };
 
-const updateStatusContact = async (id, data) => {
-  const contact = await getContactById(id);
+const updateStatusContact = async (userId, contactId, data) => {
+  const contact = await getContactById(userId, contactId);
   if (!contact) {
     return null;
   }
