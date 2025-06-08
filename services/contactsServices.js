@@ -1,10 +1,17 @@
 import Contact from "../db/models/Contact.js";
 
-const listContacts = (userId) => {
+const listContacts = (userId, { page = 1, limit = 20, favorite } = {}) => {
+  const offset = (page - 1) * limit;
+  const where = {
+    owner: userId,
+  };
+  if (favorite !== undefined) {
+    where.favorite = favorite;
+  }
   return Contact.findAll({
-    where: {
-      owner: userId,
-    },
+    where,
+    offset,
+    limit,
   });
 };
 

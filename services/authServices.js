@@ -51,3 +51,12 @@ export const logoutUser = async (userId) => {
   }
   await user.update({ token: null });
 };
+
+export const updateSubscription = async (userId, subscription) => {
+  const user = await findUser({ id: userId });
+  if (!user) {
+    throw HttpError(404, "Not found");
+  }
+  await user.update({ subscription });
+  return user;
+};

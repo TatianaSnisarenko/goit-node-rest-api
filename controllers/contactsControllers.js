@@ -4,7 +4,18 @@ import controllerWrapper from "../decorators/controllerWrapper.js";
 
 const getAllContacts = async (req, res) => {
   const { id: userId } = req.user;
-  const contacts = await contactsService.listContacts(userId);
+  const { page = 1, limit = 20, favorite } = req.query;
+  const pageNum = Number(page) > 0 ? Number(page) : 1;
+  const limitNum = Number(limit) > 0 ? Number(limit) : 20;
+  let favoriteValue;
+  if (favorite !== undefined) {
+    favoriteValue = favorite === "true";
+  }
+  const contacts = await contactsService.listContacts(userId, {
+    page: pageNum,
+    limit: limitNum,
+    favorite: favoriteValue,
+  });
   res.json(contacts);
 };
 

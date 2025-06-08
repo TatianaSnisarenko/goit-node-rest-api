@@ -20,3 +20,13 @@ export const authSchema = Joi.object({
         "Password must contain at least one uppercase letter, one lowercase letter, and one digit",
     }),
 });
+
+export const updateSubscriptionSchema = Joi.object({
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .required()
+    .messages({
+      "any.required": "Missing field subscription",
+      "any.only": "Subscription must be one of: starter, pro, business",
+    }),
+});
