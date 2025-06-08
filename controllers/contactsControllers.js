@@ -46,9 +46,9 @@ const updateContact = async (req, res) => {
 };
 
 const updateStatusContact = async (req, res) => {
-  const { id } = req.params;
+  const { contactId } = req.params;
   const updatedContact = await contactsService.updateStatusContact(
-    id,
+    contactId,
     req.body
   );
 
