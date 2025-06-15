@@ -6,3 +6,6 @@ node_modules/
 
 # origin db
 src/db/contacts_origin.json
+
+# png files in public/avatars
+/public/avatars/*.png
