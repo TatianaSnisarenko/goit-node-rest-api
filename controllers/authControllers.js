@@ -6,13 +6,18 @@ import gravatar from "gravatar";
 
 const avatarDir = path.resolve("public", "avatars");
 
+async function saveAvatarFile(req) {
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarDir, filename);
+  await fs.rename(oldPath, newPath);
+  const avatarURL = path.join("avatars", filename);
+  return avatarURL;
+}
+
 const register = async (req, res) => {
   let avatarURL = null;
   if (req.file) {
-    const { path: oldPath, filename } = req.file;
-    const newPath = path.join(avatarDir, filename);
-    await fs.rename(oldPath, newPath);
-    avatarURL = path.join("avatars", filename);
+    avatarURL = await saveAvatarFile(req);
   } else {
     avatarURL = gravatar.url(req.body.email, { s: "250", d: "retro" }, true);
   }
@@ -66,10 +71,7 @@ const updateUserSubscription = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { id } = req.user;
-  const { path: oldPath, filename } = req.file;
-  const newPath = path.join(avatarDir, filename);
-  await fs.rename(oldPath, newPath);
-  const avatarURL = path.join("avatars", filename);
+  const avatarURL = await saveAvatarFile(req);
   await authService.updateAvatarURL(id, avatarURL);
   res.status(200).json({ avatarURL });
 };
