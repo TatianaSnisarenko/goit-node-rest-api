@@ -2,6 +2,7 @@ import controllerWrapper from "../decorators/controllerWrapper.js";
 import * as authService from "../services/authServices.js";
 import fs from "node:fs/promises";
 import path from "node:path";
+import gravatar from "gravatar";
 
 const avatarDir = path.resolve("public", "avatars");
 
@@ -12,6 +13,8 @@ const register = async (req, res) => {
     const newPath = path.join(avatarDir, filename);
     await fs.rename(oldPath, newPath);
     avatarURL = path.join("avatars", filename);
+  } else {
+    avatarURL = gravatar.url(req.body.email, { s: "250", d: "retro" }, true);
   }
 
   const newUser = await authService.registerUser({ ...req.body, avatarURL });
