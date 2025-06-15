@@ -41,6 +41,7 @@ const getCurrentUser = async (req, res) => {
   res.json({
     email,
     subscription,
+    avatarURL: req.user.avatarURL || null,
   });
 };
 
@@ -60,10 +61,21 @@ const updateUserSubscription = async (req, res) => {
   });
 };
 
+const updateAvatar = async (req, res) => {
+  const { id } = req.user;
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarDir, filename);
+  await fs.rename(oldPath, newPath);
+  const avatarURL = path.join("avatars", filename);
+  await authService.updateAvatarURL(id, avatarURL);
+  res.status(200).json({ avatarURL });
+};
+
 export default {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
   getCurrentUser: controllerWrapper(getCurrentUser),
   logout: controllerWrapper(logout),
   updateUserSubscription: controllerWrapper(updateUserSubscription),
+  updateAvatar: controllerWrapper(updateAvatar),
 };
