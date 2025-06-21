@@ -60,3 +60,12 @@ export const updateSubscription = async (userId, subscription) => {
   await user.update({ subscription });
   return user;
 };
+
+export const updateAvatarURL = async (userId, avatarURL) => {
+  const user = await findUser({ id: userId });
+  if (!user) {
+    throw HttpError(404, "Not found");
+  }
+  await user.update({ avatarURL });
+  return user;
+};
