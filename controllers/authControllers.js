@@ -76,6 +76,22 @@ const updateAvatar = async (req, res) => {
   res.status(200).json({ avatarURL });
 };
 
+const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.params;
+  await authService.verifyEmail(verificationToken);
+  res.json({
+    message: "Verification successful",
+  });
+};
+
+const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+  await authService.resendVerificationEmail(email);
+  res.json({
+    message: "Verification email sent",
+  });
+};
+
 export default {
   register: controllerWrapper(register),
   login: controllerWrapper(login),
@@ -83,4 +99,6 @@ export default {
   logout: controllerWrapper(logout),
   updateUserSubscription: controllerWrapper(updateUserSubscription),
   updateAvatar: controllerWrapper(updateAvatar),
+  verifyEmail: controllerWrapper(verifyEmail),
+  resendVerificationEmail: controllerWrapper(resendVerificationEmail),
 };

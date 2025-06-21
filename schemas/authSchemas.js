@@ -30,3 +30,11 @@ export const updateSubscriptionSchema = Joi.object({
       "any.only": "Subscription must be one of: starter, pro, business",
     }),
 });
+
+export const authVerifySchema = Joi.object({
+  email: Joi.string().email().required().messages({
+    "any.required": "Email is required",
+    "string.email": "Email must be a valid email",
+    "string.empty": "Email cannot be empty",
+  }),
+});
